@@ -16,7 +16,13 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      '*module/*task/*.{js,css}'
+      {
+        pattern: '{0,1,2,3,4,5}-module/*task/*.js',
+      },
+      {
+        pattern: '{6,7,8,9}-module/*task/*.js',
+        type: 'module',
+      },
     ],
 
 
@@ -28,33 +34,7 @@ module.exports = function(config) {
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-      '{6,7,8,9}-module/**/*.js': ['webpack']
-    },
 
-    webpack: {
-      module: {
-        rules:[
-          {
-            test: /\.js/,
-            exclude: /(node_modules)/,
-            use: {
-              loader: 'babel-loader',
-              options: {
-                presets: ['@babel/preset-env'],
-                plugins: ['@babel/plugin-proposal-class-properties']
-              }
-            }
-          }
-        ]
-      }
-    },
-
-    webpackMiddleware: {
-      // webpack-dev-middleware configuration
-      // i. e.
-      stats: 'errors-only',
-    },
 
 
     // test results reporter to use
