@@ -4,5 +4,11 @@
  * @returns {Number}
  */
 function sumSalary(salaries) {
-  // ваш код...
+  let summ = 0;
+  for (let key in salaries) {
+    if ( parseFloat(salaries[key]) ) {
+      summ += salaries[key];
+    }
+  }
+  return summ;
 }
