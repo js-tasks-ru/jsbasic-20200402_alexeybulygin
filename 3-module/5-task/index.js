@@ -6,11 +6,10 @@
 function getMinMax(str) {
   let vals = str
   .split(/,| /)
-  .filter(val => parseFloat(val))
-  .sort( (a, b) => a - b );
+  .filter(item => Number(item));
   let result = {
-    min: +vals[0],
-    max: +vals[vals.length - 1],
+    min: Math.min(...vals),
+    max: Math.max(...vals),
   }
   return result;
 }
