@@ -4,5 +4,8 @@
  * @return {HTMLUListElement}
  */
 function makeFriendsList(friends) {
-  // ваш код...
+  let ul = document.createElement('ul');
+  for (name of friends) {
+    ul.append(`<li>${name}</li>`);
+  }
 }
