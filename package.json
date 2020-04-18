@@ -36,8 +36,5 @@
     "karma-mocha-reporter": "git+https://github.com/javascriptru/karma-mocha-reporter.git",
     "karma-viewport": "^1.0.6"
   },
-  "dependencies": {
-    "webpack": "^4.29.5",
-    "webpack-cli": "^3.2.3"
-  }
+  "dependencies": {}
 }
