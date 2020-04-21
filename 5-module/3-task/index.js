@@ -55,6 +55,8 @@ function initCarousel() {
       item.style.transition = 'all .5s';
     }
   }
+  // execute showHideArrow function immediately for starting from currentIndex slide
+  sliderMain();
 
   // slider arrow click event
   for (let item of sliderArrows) {
