@@ -63,10 +63,7 @@ function initCarousel() {
     for (let i = 0; i < currentIndex; i++) {
       slidesWidth -= carouselSlides[i].width;
     }
-    for (let item of sliderItems) {
-      item.style.transform = `translateX(${slidesWidth}px)`;
-      item.style.transition = 'all .5s';
-    }
+    sliderWrap.style.transform = `translateX(${slidesWidth}px)`;
     showHideArrow();
   }
 
