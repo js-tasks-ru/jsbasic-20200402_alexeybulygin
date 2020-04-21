@@ -24,7 +24,22 @@ function initCarousel() {
   // set default slide index
   let currentIndex = 0;
 
-  // show or hide slider arrow depending on the index of the current item
+  // execute sliderMain function
+  sliderMain();
+
+  // slider arrow click event
+  for (let item of sliderArrows) {
+    item.addEventListener('click', (event) => {
+      if ( event.currentTarget.classList.contains('carousel__arrow_right') ) {
+        currentIndex++;
+      } else {
+        currentIndex--;
+      }
+      sliderMain();
+    });
+  }
+
+  // show or hide slider arrow
   function showHideArrow() {
     // sorting collection
     for (let item of sliderArrows) {
@@ -41,8 +56,6 @@ function initCarousel() {
       }
     }
   }
-  // execute showHideArrow function immediately
-  showHideArrow();
 
   // main slider function
   function sliderMain() {
@@ -54,21 +67,7 @@ function initCarousel() {
       item.style.transform = `translateX(${slidesWidth}px)`;
       item.style.transition = 'all .5s';
     }
-  }
-  // execute showHideArrow function immediately for starting from currentIndex slide
-  sliderMain();
-
-  // slider arrow click event
-  for (let item of sliderArrows) {
-    item.addEventListener('click', (event) => {
-      if ( event.currentTarget.classList.contains('carousel__arrow_right') ) {
-        currentIndex++;
-      } else {
-        currentIndex--;
-      }
-      sliderMain();
-      showHideArrow();
-    });
+    showHideArrow();
   }
 
 }
