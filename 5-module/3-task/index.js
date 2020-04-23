@@ -21,9 +21,9 @@ function initCarousel() {
   for (let item of sliderArrows) {
     item.addEventListener('click', (event) => {
       if ( event.currentTarget.classList.contains('carousel__arrow_right') ) {
-        currentIndex++;
+        defaultIndex++;
       } else {
-        currentIndex--;
+        defaultIndex--;
       }
       sliderMain();
     });
@@ -31,7 +31,7 @@ function initCarousel() {
 
   // main slider function
   function sliderMain() {
-    let slidesWidth = currentIndex * -sliderWrap.offsetWidth;
+    let slidesWidth = defaultIndex * -sliderWrap.offsetWidth;
     sliderWrap.style.transform = `translateX(${slidesWidth}px)`;
     showHideArrow();
   }
@@ -40,13 +40,13 @@ function initCarousel() {
   function showHideArrow() {
     // sorting collection of arrows
     for (let item of sliderArrows) {
-      if ( currentIndex > 0 && currentIndex < sliderItems.length - 1 ) {
+      if ( defaultIndex > 0 && defaultIndex < sliderItems.length - 1 ) {
         item.style.display = '';
-      } else if (currentIndex == '0') {
+      } else if (defaultIndex == '0') {
         if ( item.classList.contains('carousel__arrow_left') ) {
           item.style.display = 'none';
         }
-      } else if ( currentIndex == sliderItems.length - 1 ) {
+      } else if ( defaultIndex == sliderItems.length - 1 ) {
         if ( item.classList.contains('carousel__arrow_right') ) {
           item.style.display = 'none';
         }
