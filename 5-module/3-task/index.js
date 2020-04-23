@@ -3,7 +3,8 @@ function initCarousel() {
   let slider = document.querySelector('[data-carousel-holder]');
 
   // find slider arrows
-  let sliderArrows = slider.querySelectorAll('.carousel__arrow');
+  let sliderArrowLeft = slider.querySelector('.carousel__arrow_left');
+  let sliderArrowRight = slider.querySelector('.carousel__arrow_right');
 
   // find main carousel
   let sliderWrap = slider.querySelector('.carousel__inner');
@@ -18,15 +19,24 @@ function initCarousel() {
   sliderMain();
 
   // slider arrow click event
-  for (let item of sliderArrows) {
-    item.addEventListener('click', (event) => {
-      if ( event.currentTarget.classList.contains('carousel__arrow_right') ) {
-        defaultIndex++;
-      } else {
-        defaultIndex--;
-      }
-      sliderMain();
-    });
+  document.addEventListener('click', (event) => {
+    if ( event.target.closest('.carousel__arrow_right') ) {
+      nextSlide();
+    } else if ( event.target.closest('.carousel__arrow_left') ) {
+      prevSlide();
+    }
+  });
+
+  // turn to next slide
+  function nextSlide() {
+    defaultIndex++;
+    sliderMain();
+  }
+
+  // turn to previous slide
+  function prevSlide() {
+    defaultIndex--;
+    sliderMain();
   }
 
   // main slider function
@@ -39,18 +49,13 @@ function initCarousel() {
   // show or hide slider arrow
   function showHideArrow() {
     // sorting collection of arrows
-    for (let item of sliderArrows) {
-      if ( defaultIndex > 0 && defaultIndex < sliderItems.length - 1 ) {
-        item.style.display = '';
-      } else if (defaultIndex == '0') {
-        if ( item.classList.contains('carousel__arrow_left') ) {
-          item.style.display = 'none';
-        }
-      } else if ( defaultIndex == sliderItems.length - 1 ) {
-        if ( item.classList.contains('carousel__arrow_right') ) {
-          item.style.display = 'none';
-        }
-      }
+    if ( defaultIndex > 0 && defaultIndex < sliderItems.length - 1 ) {
+      sliderArrowLeft.style.display = '';
+      sliderArrowRight.style.display = '';
+    } else if (defaultIndex == '0') {
+      sliderArrowLeft.style.display = 'none';
+    } else if ( defaultIndex == sliderItems.length - 1 ) {
+      sliderArrowRight.style.display = 'none';
     }
   }
 
