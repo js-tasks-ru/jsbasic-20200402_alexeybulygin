@@ -11,18 +11,8 @@ function initCarousel() {
   // find all carousel items
   let sliderItems = sliderWrap.querySelectorAll('.carousel__slide');
 
-  // create empty array for params of every slide
-  let carouselSlides = [];
-
-  // add params of every slide to carouselSlides array
-  sliderItems.forEach((item, i) => {
-    carouselSlides[i] = {
-      width: item.offsetWidth,
-    }
-  });
-
-  // set default slide index
-  let currentIndex = 0;
+  // set default slide
+  let defaultIndex = 0;
 
   // execute sliderMain function
   sliderMain();
@@ -39,9 +29,16 @@ function initCarousel() {
     });
   }
 
+  // main slider function
+  function sliderMain() {
+    let slidesWidth = currentIndex * -sliderWrap.offsetWidth;
+    sliderWrap.style.transform = `translateX(${slidesWidth}px)`;
+    showHideArrow();
+  }
+
   // show or hide slider arrow
   function showHideArrow() {
-    // sorting collection
+    // sorting collection of arrows
     for (let item of sliderArrows) {
       if ( currentIndex > 0 && currentIndex < sliderItems.length - 1 ) {
         item.style.display = '';
@@ -55,16 +52,6 @@ function initCarousel() {
         }
       }
     }
-  }
-
-  // main slider function
-  function sliderMain() {
-    let slidesWidth = 0;
-    for (let i = 0; i < currentIndex; i++) {
-      slidesWidth -= carouselSlides[i].width;
-    }
-    sliderWrap.style.transform = `translateX(${slidesWidth}px)`;
-    showHideArrow();
   }
 
 }
