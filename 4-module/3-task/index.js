@@ -3,34 +3,33 @@
  * @param {Element} table
  */
  function highlight(table) {
-   // check available status
- 	let status = table.querySelectorAll('tbody td:nth-child(4)');
- 	for (let item of status) {
- 		if ( item.dataset.available == 'true' ) {
- 			item.closest('tr').classList.add('available');
- 		} else if ( item.dataset.available == 'false' ) {
- 			item.closest('tr').classList.add('unavailable');
- 		} else if ( !item.hasAttribute('') ) {
- 			item.closest('tr').setAttribute('hidden', '')
- 		}
- 	}
 
- 	// check gender
- 	let gender = table.querySelectorAll('tbody td:nth-child(3)');
- 	for (let item of gender) {
- 		if ( item.textContent === 'm' ) {
- 			item.closest('tr').classList.add('male');
- 		} else if ( item.textContent == 'f' ) {
- 			item.closest('tr').classList.add('female');
- 		}
- 	}
+   // find all rows in table
+   let tableRows = table.querySelectorAll('tbody tr');
 
- 	// check age
- 	let age = table.querySelectorAll('tbody td:nth-child(2)');
- 	for (let item of age) {
- 		if ( item.textContent < '18' ) {
- 			item.closest('tr').style.cssText = `text-decoration: line-through`;
- 		}
- 	}
+   for (row of tableRows) {
+
+     // check available status
+     if ( row.querySelector('td:nth-child(4)').dataset.available === 'true' ) {
+       row.classList.add('available');
+     } else if ( row.querySelector('td:nth-child(4)').dataset.available === 'false' ) {
+       row.classList.add('unavailable');
+     } else if ( !row.querySelector('td:nth-child(4)').hasAttribute('') ) {
+       row.setAttribute('hidden', '');
+     }
+
+     // check gender
+     if ( row.querySelector('td:nth-child(3)').textContent === 'm' ) {
+       row.classList.add('male');
+     } else if ( row.querySelector('td:nth-child(3)').textContent === 'f' ) {
+       row.classList.add('female');
+     }
+
+     // check age
+     if ( row.querySelector('td:nth-child(2)').textContent < '18' ) {
+       row.style.textDecoration = 'line-through';
+     }
+
+   }
 
  }
