@@ -18,6 +18,22 @@ function initCarousel() {
   // execute sliderMain function
   sliderMain();
 
+  // slider swipe left/right events
+  let touchParams = [];
+  document.addEventListener('touchmove', (event) => {
+    if ( event.target.closest('.carousel__inner') ) {
+      touchParams.push(event.touches[0].clientX);
+    }
+  });
+  document.addEventListener('touchend', () => {
+    if ( touchParams[0] > touchParams[touchParams.length - 1] && defaultIndex != sliderItems.length - 1 ) {
+      nextSlide();
+    } else if ( touchParams[0] < touchParams[touchParams.length - 1] && defaultIndex != 0 ) {
+      prevSlide();
+    }
+    touchParams = [];
+  });
+
   // slider arrow click event
   document.addEventListener('click', (event) => {
     if ( event.target.closest('.carousel__arrow_right') ) {
