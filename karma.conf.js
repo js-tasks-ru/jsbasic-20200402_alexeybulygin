@@ -23,6 +23,10 @@ module.exports = function(config) {
         pattern: '{6,7,8,9}-module/*task/*.js',
         type: 'module',
       },
+      {
+        pattern: 'assets/lib/*.js',
+        type: 'module',
+      }
     ],
 
 
