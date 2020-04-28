@@ -6,8 +6,7 @@ export default class Carousel {
   constructor(slides) {
     this.slides = slides;
 
-    this.elem.addEventListener('click', (event) => this.addToCart(event));
-
+    // creating a new element
     this.elem = document.createElement('div');
     this.elem.classList.add('carousel');
     this.elem.innerHTML = `
@@ -21,6 +20,13 @@ export default class Carousel {
         ${this.render(slides)}
       </div>
     `;
+
+    this.elem.addEventListener('click', (event) => this.addToCart(event));
+
+    // main slider method
+    this.slider();
+
+    // render to page
     return this.elem.innerHTML;
   }
 
@@ -44,6 +50,7 @@ export default class Carousel {
     return slide;
   }
 
+  // add to cart event
   addToCart(event) {
     if ( event.target.closest('.carousel__button') ) {
       this.elem.dispatchEvent(new CustomEvent("product-add", {
@@ -53,6 +60,7 @@ export default class Carousel {
     }
   }
 
+  // main function of the slider
   slider() {
     // find slider arrows
     let sliderArrowLeft = this.elem.querySelector('.carousel__arrow_left');
