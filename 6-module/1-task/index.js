@@ -33,7 +33,7 @@ export default class UserTable {
   constructor(rows) {
 
     this.elem = document.createElement('table');
-    this.elem.addEventListener('click', (event) => this.deleteClick(event));
+    this.elem.addEventListener('click', (event) => this.deleteRowClick(event));
     this.elem.innerHTML =
     `
     <thead>
@@ -68,7 +68,7 @@ export default class UserTable {
     return row;
   }
 
-  deleteClick(event) {
+  deleteRowClick(event) {
     if (event.target.className == 'js-remove-row') {
       event.target.closest('tr').remove();
     }
