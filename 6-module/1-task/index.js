@@ -54,7 +54,7 @@ export default class UserTable {
   }
 
   render(rows) {
-    let row = rows.map(value => {
+    return rows.map(value => {
       return `
       <tr>
         <td>${value.name}</td>
@@ -65,11 +65,10 @@ export default class UserTable {
       </tr>
       `
     }).join('');
-    return row;
   }
 
   deleteRowClick(event) {
-    if (event.target.className == 'js-remove-row') {
+    if (event.target.className === 'js-remove-row') {
       event.target.closest('tr').remove();
     }
   }
