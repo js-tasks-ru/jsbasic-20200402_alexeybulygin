@@ -31,6 +31,7 @@ function initCarousel() {
     } else if ( touchParams[0] < touchParams[touchParams.length - 1] && defaultIndex != 0 ) {
       prevSlide();
     }
+    // clear touchParams array for next touchmove event
     touchParams = [];
   });
 
