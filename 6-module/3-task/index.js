@@ -57,7 +57,6 @@ export default class Carousel {
   }
 
   slider() {
-    let slider = this.elem.querySelector('[data-carousel-holder]');
     // find slider arrows
     let sliderArrowLeft = this.elem.querySelector('.carousel__arrow_left');
     let sliderArrowRight = this.elem.querySelector('.carousel__arrow_right');
