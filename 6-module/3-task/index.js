@@ -5,8 +5,10 @@ export default class Carousel {
   // main skeleton
   constructor(slides) {
     this.slides = slides;
-    this.elem = document.createElement('div');
+
     this.elem.addEventListener('click', (event) => this.addToCart(event));
+
+    this.elem = document.createElement('div');
     this.elem.classList.add('carousel');
     this.elem.innerHTML = `
       <div class="carousel__arrow carousel__arrow_right">
@@ -19,7 +21,6 @@ export default class Carousel {
         ${this.render(slides)}
       </div>
     `;
-    this.slider();
     return this.elem.innerHTML;
   }
 
@@ -50,10 +51,6 @@ export default class Carousel {
         bubbles: true
       }));
     }
-  }
-
-  slidePrev(event) {
-
   }
 
   slider() {
