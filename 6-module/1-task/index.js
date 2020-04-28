@@ -45,26 +45,27 @@ export default class UserTable {
             <th></th>
         </tr>
     </thead>
-    ${this.render(rows).innerHTML}
+    <tbody>
+      ${this.render(rows)}
+    </tbody>
     `;
 
     return this.elem.innerHTML;
   }
 
   render(rows) {
-    const rowList = document.createElement('tbody');
-    for (let row of rows) {
-      let tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${row.name}</td>
-        <td>${row.age}</td>
-        <td>${row.salary}</td>
-        <td>${row.city}</td>
+    let row = rows.map(value => {
+      return `
+      <tr>
+        <td>${value.name}</td>
+        <td>${value.age}</td>
+        <td>${value.salary}</td>
+        <td>${value.city}</td>
         <td><button class="js-remove-row">X</button></td>
-      `;
-      rowList.appendChild(tr);
-    }
-    return rowList;
+      </tr>
+      `
+    }).join('');
+    return row;
   }
 
   deleteClick(event) {
