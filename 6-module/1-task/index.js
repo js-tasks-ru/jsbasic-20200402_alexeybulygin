@@ -33,7 +33,27 @@ export default class UserTable {
   constructor(rows) {
 
     this.elem = document.createElement('table');
-    this.elem.addEventListener('click', (event) => this.deleteRowClick(event));
+
+    this.render(rows);
+
+    this.elem.addEventListener('click', (event) => this.deleteRow(event));
+
+  }
+
+  render(rows) {
+    let tableRows = rows.map(value => {
+      return `
+      <tr>
+        <td>${value.name}</td>
+        <td>${value.age}</td>
+        <td>${value.salary}</td>
+        <td>${value.city}</td>
+        <td><button class="js-remove-row">X</button></td>
+      </tr>
+      `
+    }).join('');
+
+    // table skeleton
     this.elem.innerHTML =
     `
     <thead>
@@ -46,28 +66,12 @@ export default class UserTable {
         </tr>
     </thead>
     <tbody>
-      ${this.render(rows)}
+      ${tableRows}
     </tbody>
     `;
-
-    return this.elem.innerHTML;
   }
 
-  render(rows) {
-    return rows.map(value => {
-      return `
-      <tr>
-        <td>${value.name}</td>
-        <td>${value.age}</td>
-        <td>${value.salary}</td>
-        <td>${value.city}</td>
-        <td><button class="js-remove-row">X</button></td>
-      </tr>
-      `
-    }).join('');
-  }
-
-  deleteRowClick(event) {
+  deleteRow(event) {
     if (event.target.className === 'js-remove-row') {
       event.target.closest('tr').remove();
     }
