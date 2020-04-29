@@ -2,19 +2,19 @@ import createElement from '../../assets/lib/create-element.js';
 
 export default class ProductCard {
   constructor(product) {
-    this.elem = document.createElement('div');
-
-    // add card class for the root element
-    this.elem.classList.add('card');
-
     this.elem.addEventListener('click', (event) => this.addToCart(event));
-
     this.id = product.id;
 
     this.render(product);
   }
 
   render(product) {
+    // create element
+    this.elem = document.createElement('div');
+
+    // add card class for the root element
+    this.elem.classList.add('card');
+    
     // set product pictures path
     let productImagePath = '/assets/images/products';
 
