@@ -6,9 +6,6 @@ export default class Carousel {
   constructor(slides) {
     this.slides = slides;
 
-    // creating a new element
-    this.elem = document.createElement('div');
-    this.elem.classList.add('carousel');
     this.render(slides);
 
     // main slider method
@@ -18,11 +15,15 @@ export default class Carousel {
     this.elem.addEventListener('click', (event) => this.addToCart(event));
   }
 
-  // render all slides from object
-  render(slides) {
+  // render method
+  render(slider) {
+    // creating a new element
+    this.elem = document.createElement('div');
+    this.elem.classList.add('carousel');
+
     let productPicturesPath = '/assets/images/carousel';
 
-    let sliderItems = slides.map( item => {
+    let sliderItems = slider.map( item => {
       return `
       <div class="carousel__slide" data-id="${item.id}">
         <img src="${productPicturesPath}/${item.image}" class="carousel__img" alt="slide">
