@@ -9,31 +9,20 @@ export default class Carousel {
     // creating a new element
     this.elem = document.createElement('div');
     this.elem.classList.add('carousel');
-    this.elem.innerHTML = `
-      <div class="carousel__arrow carousel__arrow_right">
-        <img src="/assets/images/icons/angle-icon.svg" alt="icon">
-      </div>
-      <div class="carousel__arrow carousel__arrow_left">
-        <img src="/assets/images/icons/angle-left-icon.svg" alt="icon">
-      </div>
-      <div class="carousel__inner">
-        ${this.render(slides)}
-      </div>
-    `;
-
-    this.elem.addEventListener('click', (event) => this.addToCart(event));
+    this.render(slides);
 
     // main slider method
     this.slider();
 
-    // render to page
-    return this.elem.innerHTML;
+    // add to cart event
+    this.elem.addEventListener('click', (event) => this.addToCart(event));
   }
 
   // render all slides from object
   render(slides) {
     let productPicturesPath = '/assets/images/carousel';
-    let slide = slides.map( item => {
+
+    let sliderItems = slides.map( item => {
       return `
       <div class="carousel__slide" data-id="${item.id}">
         <img src="${productPicturesPath}/${item.image}" class="carousel__img" alt="slide">
@@ -47,7 +36,19 @@ export default class Carousel {
       </div>
       `;
     }).join('');
-    return slide;
+
+    // slider skeleton
+    this.elem.innerHTML = `
+      <div class="carousel__arrow carousel__arrow_right">
+        <img src="/assets/images/icons/angle-icon.svg" alt="icon">
+      </div>
+      <div class="carousel__arrow carousel__arrow_left">
+        <img src="/assets/images/icons/angle-left-icon.svg" alt="icon">
+      </div>
+      <div class="carousel__inner">
+        ${sliderItems}
+      </div>
+    `;
   }
 
   // add to cart event
