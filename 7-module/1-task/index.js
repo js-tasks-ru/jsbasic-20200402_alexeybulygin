@@ -6,9 +6,11 @@ export default class RibbonMenu {
 
     this.render(categories);
 
-    this.scrollFunction();
+    this.arrowUpdate();
 
     this.elem.addEventListener('click', (event) => this.categoryFilter(event));
+
+    this.elem.addEventListener('click', (event) => this.scrollFunction(event));
 
   }
 
@@ -60,44 +62,33 @@ export default class RibbonMenu {
 
   }
 
-  scrollFunction() {
+  scrollFunction(event) {
 
+    let scrollValue = 350;
+
+    // arrow click scroll action
+    if ( event.target.closest('.ribbon__arrow_left') ) {
+      this.elem.querySelector('.ribbon__inner').scrollBy(-scrollValue, 0);
+      this.arrowUpdate();
+    } else if ( event.target.closest('.ribbon__arrow_right') ) {
+      this.elem.querySelector('.ribbon__inner').scrollBy(scrollValue, 0);
+      this.arrowUpdate();
+    }
+
+  }
+
+  arrowUpdate() {
     let ribbonInner = this.elem.querySelector('.ribbon__inner');
 
     // find arrows
     let arrowLeft = this.elem.querySelector('.ribbon__arrow_left');
     let arrowRight = this.elem.querySelector('.ribbon__arrow_right');
 
-    isArrowVisible();
+    // get scroll value
+    let scrollLeft = ribbonInner.scrollLeft;
+    let scrollRight = ribbonInner.scrollWidth - ribbonInner.scrollLeft - ribbonInner.clientWidth;
 
-    // arrow click scroll action
-    document.addEventListener('click', (event) => {
-      if ( event.target.closest('.ribbon__arrow_left') ) {
-        ribbonInner.scrollBy(-350, 0);
-        isArrowVisible();
-      } else if ( event.target.closest('.ribbon__arrow_right') ) {
-        ribbonInner.scrollBy(350, 0);
-        isArrowVisible();
-      }
-    });
-
-    // show/hide arrows
-    function isArrowVisible() {
-
-      // get scroll value
-      let scrollLeft = ribbonInner.scrollLeft;
-      let scrollRight = ribbonInner.scrollWidth - ribbonInner.scrollLeft - ribbonInner.clientWidth;
-
-      if ( scrollLeft !== 0 && scrollRight !== 0 ) {
-        arrowLeft.classList.add('ribbon__arrow_visible');
-        arrowRight.classList.add('ribbon__arrow_visible');
-      } else if ( scrollLeft === 0 ) {
-        arrowLeft.classList.remove('ribbon__arrow_visible');
-      } else if ( scrollRight === 0 ) {
-        arrowRight.classList.remove('ribbon__arrow_visible');
-      }
-
-    }
-
+    scrollLeft > 0 ? arrowLeft.classList.add('ribbon__arrow_visible') : arrowLeft.classList.remove('ribbon__arrow_visible');
+    scrollRight > 0 ? arrowRight.classList.add('ribbon__arrow_visible') : arrowRight.classList.remove('ribbon__arrow_visible');
   }
 }
