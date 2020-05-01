@@ -32,8 +32,7 @@ export default class Modal {
   }
 
   setBody(node) {
-    this.bodyText = node;
-    this.elem.querySelector('.modal__body').append(this.bodyText);
+    this.elem.querySelector('.modal__body').append(node);
   }
 
   open() {
@@ -47,7 +46,7 @@ export default class Modal {
   }
 
   modalClose(event) {
-    if ( event.target.closest('.modal__close') || event.code == 'Escape' ) {
+    if ( event.target.closest('.modal__close') || event.code === 'Escape' ) {
       this.close();
     }
   }
