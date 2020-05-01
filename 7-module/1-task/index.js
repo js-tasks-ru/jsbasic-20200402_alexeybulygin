@@ -64,12 +64,15 @@ export default class RibbonMenu {
 
     let ribbonInner = this.elem.querySelector('.ribbon__inner');
 
+    // get scroll value
     let scrollLeft = ribbonInner.scrollLeft;
     let scrollRight = ribbonInner.scrollWidth - ribbonInner.scrollLeft - ribbonInner.clientWidth;
 
+    // find arrows
     let arrowLeft = this.elem.querySelector('.ribbon__arrow_left');
     let arrowRight = this.elem.querySelector('.ribbon__arrow_right');
 
+    // arrow click scroll action
     document.addEventListener('click', (event) => {
       if ( event.target.closest('.ribbon__arrow_left') ) {
         ribbonInner.scrollBy(-350, 0);
@@ -78,6 +81,7 @@ export default class RibbonMenu {
       }
     });
 
+    // show/hide arrows
     if ( scrollLeft === 0 ) {
       arrowLeft.classList.toggle('ribbon__arrow_visible');
     } else if ( scrollRight === 0 ) {
