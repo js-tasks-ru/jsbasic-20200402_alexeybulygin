@@ -10,6 +10,8 @@ export default class RibbonMenu {
 
     this.elem.addEventListener('click', (event) => this.categoryFilter(event));
 
+    this.elem.addEventListener('click', (event) => this.scrollFunction(event));
+
   }
 
   render(menu) {
@@ -60,20 +62,18 @@ export default class RibbonMenu {
 
   }
 
-  scrollFunction() {
+  scrollFunction(event) {
 
     let scrollValue = 350;
 
     // arrow click scroll action
-    document.addEventListener('click', (event) => {
-      if ( event.target.closest('.ribbon__arrow_left') ) {
-        this.elem.querySelector('.ribbon__inner').scrollBy(-scrollValue, 0);
-        this.arrowUpdate();
-      } else if ( event.target.closest('.ribbon__arrow_right') ) {
-        this.elem.querySelector('.ribbon__inner').scrollBy(scrollValue, 0);
-        this.arrowUpdate();
-      }
-    });
+    if ( event.target.closest('.ribbon__arrow_left') ) {
+      this.elem.querySelector('.ribbon__inner').scrollBy(-scrollValue, 0);
+      this.arrowUpdate();
+    } else if ( event.target.closest('.ribbon__arrow_right') ) {
+      this.elem.querySelector('.ribbon__inner').scrollBy(scrollValue, 0);
+      this.arrowUpdate();
+    }
 
   }
 
