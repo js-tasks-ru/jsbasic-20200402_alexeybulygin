@@ -60,19 +60,8 @@ export default class RibbonMenu {
   }
 
   arrowClick(event) {
-    // arrow click scroll action
-    let scrollValue = 350;
-    if ( event.target.closest('.ribbon__arrow_right') ) {
-      this.elem.querySelector('.ribbon__inner').scrollBy(scrollValue, 0);
-      this.arrowUpdate();
-    } else if ( event.target.closest('.ribbon__arrow_left') ) {
-      this.elem.querySelector('.ribbon__inner').scrollBy(-scrollValue, 0);
-      this.arrowUpdate();
-    }
-  }
-
-  arrowUpdate() {
     let ribbonInner = this.elem.querySelector('.ribbon__inner');
+
     // find arrows
     let arrowLeft = this.elem.querySelector('.ribbon__arrow_left');
     let arrowRight = this.elem.querySelector('.ribbon__arrow_right');
@@ -81,7 +70,21 @@ export default class RibbonMenu {
     let scrollLeft = ribbonInner.scrollLeft;
     let scrollRight = ribbonInner.scrollWidth - ribbonInner.scrollLeft - ribbonInner.clientWidth;
 
-    scrollLeft > 0 ? arrowLeft.classList.add('ribbon__arrow_visible') : arrowLeft.classList.remove('ribbon__arrow_visible');
-    scrollRight > 0 ? arrowRight.classList.add('ribbon__arrow_visible') : arrowRight.classList.remove('ribbon__arrow_visible');
+    // arrow click scroll action
+    let scrollValue = 350;
+    if ( event.target.closest('.ribbon__arrow_right') ) {
+      this.elem.querySelector('.ribbon__inner').scrollBy(scrollValue, 0);
+      arrowUpdate();
+    } else if ( event.target.closest('.ribbon__arrow_left') ) {
+      this.elem.querySelector('.ribbon__inner').scrollBy(-scrollValue, 0);
+      arrowUpdate();
+    }
+
+    function arrowUpdate() {
+      scrollLeft > 0 ? arrowLeft.classList.add('ribbon__arrow_visible') : arrowLeft.classList.remove('ribbon__arrow_visible');
+      scrollRight > 0 ? arrowRight.classList.add('ribbon__arrow_visible') : arrowRight.classList.remove('ribbon__arrow_visible');
+    }
   }
+
+
 }
