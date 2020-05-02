@@ -73,10 +73,12 @@ export default class RibbonMenu {
     // arrow click scroll action
     let scrollValue = 350;
     if ( event.target.closest('.ribbon__arrow_right') ) {
-      this.elem.querySelector('.ribbon__inner').scrollBy(scrollValue, 0);
+      ribbonInner.scrollBy(scrollValue, 0);
+      scrollLeft += scrollValue;
       arrowUpdate();
     } else if ( event.target.closest('.ribbon__arrow_left') ) {
-      this.elem.querySelector('.ribbon__inner').scrollBy(-scrollValue, 0);
+      ribbonInner.scrollBy(-scrollValue, 0);
+      scrollRight -= scrollValue;
       arrowUpdate();
     }
 
