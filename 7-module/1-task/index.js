@@ -6,11 +6,8 @@ export default class RibbonMenu {
 
     this.render(categories);
 
-    this.arrowUpdate();
-
     this.elem.addEventListener('click', (event) => this.categoryFilter(event));
-
-    this.elem.addEventListener('click', (event) => this.scrollFunction(event));
+    this.elem.addEventListener('click', (event) => this.arrowClick(event));
 
   }
 
@@ -28,7 +25,7 @@ export default class RibbonMenu {
     }).join('');
 
     this.elem.innerHTML = `
-      <button class="ribbon__arrow ribbon__arrow_left ribbon__arrow_visible">
+      <button class="ribbon__arrow ribbon__arrow_left">
         <img src="/assets/images/icons/angle-icon.svg" alt="icon">
       </button>
       <nav class="ribbon__inner">
@@ -62,29 +59,25 @@ export default class RibbonMenu {
 
   }
 
-  scrollFunction(event) {
-
-    let scrollValue = 350;
-
+  arrowClick(event) {
     // arrow click scroll action
-    if ( event.target.closest('.ribbon__arrow_left') ) {
-      this.elem.querySelector('.ribbon__inner').scrollBy(-scrollValue, 0);
-      this.arrowUpdate();
-    } else if ( event.target.closest('.ribbon__arrow_right') ) {
+    let scrollValue = 350;
+    if ( event.target.closest('.ribbon__arrow_right') ) {
       this.elem.querySelector('.ribbon__inner').scrollBy(scrollValue, 0);
       this.arrowUpdate();
+    } else if ( event.target.closest('.ribbon__arrow_left') ) {
+      this.elem.querySelector('.ribbon__inner').scrollBy(-scrollValue, 0);
+      this.arrowUpdate();
     }
-
   }
 
   arrowUpdate() {
     let ribbonInner = this.elem.querySelector('.ribbon__inner');
-
     // find arrows
     let arrowLeft = this.elem.querySelector('.ribbon__arrow_left');
     let arrowRight = this.elem.querySelector('.ribbon__arrow_right');
 
-    // get scroll value
+    // get scroll value;
     let scrollLeft = ribbonInner.scrollLeft;
     let scrollRight = ribbonInner.scrollWidth - ribbonInner.scrollLeft - ribbonInner.clientWidth;
 
