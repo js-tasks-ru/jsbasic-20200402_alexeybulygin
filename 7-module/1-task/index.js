@@ -8,6 +8,7 @@ export default class RibbonMenu {
 
     this.elem.addEventListener('click', (event) => this.categoryFilter(event));
     this.elem.addEventListener('click', (event) => this.arrowClick(event));
+    this.elem.querySelector('.ribbon__inner').addEventListener('scroll', () => this.arrowUpdate());
 
   }
 
@@ -60,36 +61,33 @@ export default class RibbonMenu {
   }
 
   arrowClick(event) {
-    // arrow click scroll action
+
+    let ribbonInner = this.elem.querySelector('.ribbon__inner');
+
+    let scrollValue = 350;
+    if ( event.target.closest('.ribbon__arrow_right') ) {
+      ribbonInner.scrollBy(scrollValue, 0);
+    } else if ( event.target.closest('.ribbon__arrow_left') ) {
+      ribbonInner.scrollBy(-scrollValue, 0);
+    }
+
+  }
+
+  arrowUpdate() {
+
     let ribbonInner = this.elem.querySelector('.ribbon__inner');
 
     // find arrows
     let arrowLeft = this.elem.querySelector('.ribbon__arrow_left');
     let arrowRight = this.elem.querySelector('.ribbon__arrow_right');
 
+    // get scroll value;
+    let scrollLeft = ribbonInner.scrollLeft;
+    let scrollRight = ribbonInner.scrollWidth - ribbonInner.scrollLeft - ribbonInner.clientWidth;
 
-    let scrollValue = 350;
-    if ( event.target.closest('.ribbon__arrow_right') ) {
-      ribbonInner.scrollBy(scrollValue, 0)
-      setTimeout(function() {
-        arrowUpdate();
-      }, 30);
-    } else if ( event.target.closest('.ribbon__arrow_left') ) {
-      ribbonInner.scrollBy(-scrollValue, 0);
-      setTimeout(function() {
-        arrowUpdate();
-      }, 30);
-    }
+    scrollLeft > 0 ? arrowLeft.classList.add('ribbon__arrow_visible') : arrowLeft.classList.remove('ribbon__arrow_visible');
+    scrollRight > 0 ? arrowRight.classList.add('ribbon__arrow_visible') : arrowRight.classList.remove('ribbon__arrow_visible');
 
-    function arrowUpdate() {
-      // get scroll value;
-      let scrollLeft = ribbonInner.scrollLeft;
-      let scrollRight = ribbonInner.scrollWidth - ribbonInner.scrollLeft - ribbonInner.clientWidth;
-
-      scrollLeft > 0 ? arrowLeft.classList.add('ribbon__arrow_visible') : arrowLeft.classList.remove('ribbon__arrow_visible');
-      scrollRight > 0 ? arrowRight.classList.add('ribbon__arrow_visible') : arrowRight.classList.remove('ribbon__arrow_visible');
-    }
   }
-
 
 }
