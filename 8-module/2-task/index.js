@@ -8,6 +8,12 @@ export default class ProductGrid {
 
     this.render(products);
 
+    // let filters = {
+    //   noNuts: true,
+    //   vegeterianOnly: true,
+    // };
+    // this.updateFilter(filters);
+
   }
 
   render(products) {
@@ -27,16 +33,39 @@ export default class ProductGrid {
     this.elem.querySelector('.products-grid__inner').innerHTML = '';
 
     for (let item of this.products) {
-      if (
-        (item.nuts && item.nuts !== filters.noNuts)
-        &&
-        (item.vegeterian && item.vegeterian === filters.vegeterianOnly)
-        &&
-        (item.spiciness && item.spiciness > filters.maxSpiciness)
-        &&
-        item.category && item.category === filters.category)
-      ) {
+
+      if ( "noNuts" in filters && filters.noNuts === true ) {
+        if ( !("nuts" in item) ) {
+          this.itemConstruct(item);
+        }
+      } else if ( "noNuts" in filters && filters.noNuts === false ) {
         this.itemConstruct(item);
+      }
+
+      if ( "vegeterianOnly" in filters && filters.vegeterianOnly === true ) {
+        if ( "vegeterian" in item && item.vegeterian === true ) {
+          this.itemConstruct(item);
+        }
+      } else if ( "vegeterianOnly" in filters && filters.vegeterianOnly === false ) {
+        if ( "vegeterian" in item && item.vegeterian === false ) {
+          this.itemConstruct(item);
+        }
+      }
+
+      if ( filters.maxSpiciness ) {
+        if ( "spiciness" in item && item.spiciness <= filters.maxSpiciness ) {
+          this.itemConstruct(item);
+        } else {
+          continue;
+        }
+      }
+
+      if ( filters.category ) {
+        if ( item.category === filters.category ) {
+          this.itemConstruct(item);
+        } else {
+          continue;
+        }
       }
     }
 
