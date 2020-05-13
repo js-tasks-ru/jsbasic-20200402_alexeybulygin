@@ -5,7 +5,7 @@ export default class ProductCard {
     this.render(product);
 
     this.elem.addEventListener('click', (event) => this.addToCart(event));
-    this.elem.id = product.id;
+    this.id = product.id;
   }
 
   render(product) {
