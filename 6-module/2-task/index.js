@@ -36,7 +36,7 @@ export default class ProductCard {
   addToCart(event) {
     if ( event.target.closest('.card__button') ) {
       this.elem.dispatchEvent(new CustomEvent("product-add", {
-        detail: this.elem.id,
+        detail: this.id,
         bubbles: true
       }));
     }
