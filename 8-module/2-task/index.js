@@ -27,11 +27,17 @@ export default class ProductGrid {
     this.elem.querySelector('.products-grid__inner').innerHTML = '';
 
     for (let item of this.products) {
-      if ( "nuts" in item && "nuts" in item === "noNuts" in filters ) continue;
-      if ( "vegeterian" in item && "vegeterian" in item !== "vegeterianOnly" in filters ) continue;
-      if ( "spiciness" in item && "spiciness" in item > "maxSpiciness" in filters ) continue;
-      if ( "category" in item && "category" in item !== "category" in filters ) continue;
-      this.itemConstruct(item);
+      if (
+        (item.nuts && item.nuts !== filters.noNuts)
+        &&
+        (item.vegeterian && item.vegeterian === filters.vegeterianOnly)
+        &&
+        (item.spiciness && item.spiciness > filters.maxSpiciness)
+        &&
+        item.category && item.category === filters.category)
+      ) {
+        this.itemConstruct(item);
+      }
     }
 
   }
