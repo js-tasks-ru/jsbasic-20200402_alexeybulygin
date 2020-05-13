@@ -3,7 +3,7 @@ import createElement from '../../assets/lib/create-element.js';
 export default class ProductCard {
   constructor(product) {
     this.render(product);
-    
+
     this.elem.addEventListener('click', (event) => this.addToCart(event));
     this.id = product.id;
   }
