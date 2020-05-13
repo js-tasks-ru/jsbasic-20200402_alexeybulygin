@@ -54,10 +54,10 @@ export default class CartIcon {
       this.elem.style.zIndex = '10000';
 
       // calculate right position
-      let container = document.querySelectorAll('.container');
-      let rightSpace = document.documentElement.clientWidth - container[0].getBoundingClientRect().left - container[0].offsetWidth;
+      let container = document.querySelector('.container');
+      let rightSpace = document.documentElement.clientWidth - container.getBoundingClientRect().left - container.offsetWidth;
       if ( rightSpace >= this.elem.offsetWidth + 20 ) {
-        this.elem.style.left = container[0].getBoundingClientRect().left + container[0].offsetWidth + 20 + 'px';
+        this.elem.style.left = container.getBoundingClientRect().left + container.offsetWidth + 20 + 'px';
       } else {
         this.elem.style.left = document.documentElement.clientWidth - this.elem.offsetWidth - 10 + 'px';
       }
