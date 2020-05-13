@@ -3,9 +3,9 @@ import createElement from '../../assets/lib/create-element.js';
 export default class ProductCard {
   constructor(product) {
     this.render(product);
-    
+
     this.elem.addEventListener('click', (event) => this.addToCart(event));
-    this.id = product.id;
+    this.elem.id = product.id;
   }
 
   render(product) {
@@ -36,7 +36,7 @@ export default class ProductCard {
   addToCart(event) {
     if ( event.target.closest('.card__button') ) {
       this.elem.dispatchEvent(new CustomEvent("product-add", {
-        detail: this.id,
+        detail: this.elem.id,
         bubbles: true
       }));
     }
