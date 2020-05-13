@@ -5,6 +5,7 @@ export default class CartIcon {
     this.render();
 
     this.addEventListeners();
+
   }
 
   render() {
@@ -14,6 +15,8 @@ export default class CartIcon {
   update(cart) {
     if (!cart.isEmpty()) {
       this.elem.classList.add('cart-icon_visible');
+
+      this.elem.topCoord = this.elem.getBoundingClientRect().top + window.pageYOffset;
 
       this.elem.innerHTML = `
         <div class="cart-icon__inner">
@@ -40,15 +43,9 @@ export default class CartIcon {
 
   updatePosition() {
 
-    if ( document.documentElement.clientWidth <= 767 ) {
+    if (!this.elem.offsetHeight) {return;} // not visible, for mocha test
 
-      // clear all elem styles
-      this.elem.style.position = '';
-      this.elem.style.top = '';
-      this.elem.style.left = '';
-      this.elem.style.zIndex = '';
-
-    } else {
+    if ( window.pageYOffset > this.elem.topCoord && document.documentElement.clientWidth >= 767 ) {
 
       this.elem.style.position = 'fixed';
       this.elem.style.top = `50px`;
@@ -63,7 +60,15 @@ export default class CartIcon {
         this.elem.style.left = document.documentElement.clientWidth - this.elem.offsetWidth - 10 + 'px';
       }
 
+    } else {
+
+        this.elem.style.position = '';
+        this.elem.style.top = '';
+        this.elem.style.left = '';
+        this.elem.style.zIndex = '';
+
     }
+
 
   }
 

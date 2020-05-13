@@ -29,39 +29,30 @@ export default class ProductGrid {
 
     for (let item of this.products) {
 
-      if ( "noNuts" in filters && filters.noNuts === true ) {
-        if ( !("nuts" in item) ) {
-          this.itemConstruct(item);
-        }
-      } else if ( "noNuts" in filters && filters.noNuts === false ) {
+      if ( filters.noNuts === true && !("nuts" in item) ) {
+        this.itemConstruct(item);
+      } else if ( filters.noNuts === false ) {
         this.itemConstruct(item);
       }
 
-      if ( "vegeterianOnly" in filters && filters.vegeterianOnly === true ) {
+      if ( filters.vegeterianOnly && filters.vegeterianOnly === true ) {
         if ( "vegeterian" in item && item.vegeterian === true ) {
           this.itemConstruct(item);
         }
-      } else if ( "vegeterianOnly" in filters && filters.vegeterianOnly === false ) {
+      } else if ( filters.vegeterianOnly && filters.vegeterianOnly === false ) {
         if ( "vegeterian" in item && item.vegeterian === false ) {
           this.itemConstruct(item);
         }
       }
 
-      if ( filters.maxSpiciness ) {
-        if ( "spiciness" in item && item.spiciness <= filters.maxSpiciness ) {
-          this.itemConstruct(item);
-        } else {
-          continue;
-        }
+      if ( filters.maxSpiciness && item.spiciness <= filters.maxSpiciness ) {
+        this.itemConstruct(item);
       }
 
-      if ( filters.category ) {
-        if ( item.category === filters.category ) {
-          this.itemConstruct(item);
-        } else {
-          continue;
-        }
+      if ( filters.category && item.category === filters.category ) {
+        this.itemConstruct(item);
       }
+
     }
 
   }
