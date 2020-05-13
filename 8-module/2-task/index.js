@@ -29,11 +29,9 @@ export default class ProductGrid {
 
     for (let item of this.products) {
 
-      if ( filters.noNuts && filters.noNuts === true ) {
-        if ( !("nuts" in item) ) {
-          this.itemConstruct(item);
-        }
-      } else if ( filters.noNuts && filters.noNuts === false ) {
+      if ( filters.noNuts === true && !("nuts" in item) ) {
+        this.itemConstruct(item);
+      } else if ( filters.noNuts === false ) {
         this.itemConstruct(item);
       }
 
