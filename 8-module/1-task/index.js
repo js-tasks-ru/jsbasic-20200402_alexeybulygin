@@ -62,10 +62,10 @@ export default class CartIcon {
 
     } else {
 
-        this.elem.style.position = '';
-        this.elem.style.top = '';
-        this.elem.style.left = '';
-        this.elem.style.zIndex = '';
+      this.elem.style.position = '';
+      this.elem.style.top = '';
+      this.elem.style.left = '';
+      this.elem.style.zIndex = '';
 
     }
 
