@@ -1,8 +1,8 @@
 export default class StepSlider {
-  constructor({ steps, value = 3 }) {
+  constructor({ steps, value = 0 }) {
     this.render(steps, value);
 
-    this.calculatePercents(steps, value);
+    this.renderActivePoint(steps, value);
 
     this.elem.addEventListener('click', (event) => this.changeSpicy(event));
   }
@@ -35,10 +35,17 @@ export default class StepSlider {
 
   }
 
-  calculatePercents(steps, value) {
+  renderActivePoint(steps, value) {
     let sliderThumb = this.elem.querySelector('.slider__thumb');
     let sliderProgress = this.elem.querySelector('.slider__progress');
     let sliderValue = this.elem.querySelector('.slider__value');
+
+    // set active class for selected point
+    let sliderPoints = this.elem.querySelectorAll('.slider__steps span');
+    for (let item of sliderPoints) {
+      item.classList.remove('slider__step-active');
+    }
+    this.elem.querySelectorAll('.slider__steps span')[value].classList.add('slider__step-active');
 
     let leftPercents = value * (100 / (steps - 1));
 
@@ -53,7 +60,7 @@ export default class StepSlider {
     let spanWidth = this.elem.clientWidth / (steps - 1);
     let clickCoord = event.clientX - this.elem.getBoundingClientRect().left;
     let value = Math.round(clickCoord / spanWidth);
-    this.calculatePercents(steps, value);
+    this.renderActivePoint(steps, value);
 
     this.elem.dispatchEvent(
       new CustomEvent('slider-change', { // имя события должно быть именно 'slider-change'
