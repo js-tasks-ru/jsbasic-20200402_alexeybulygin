@@ -204,9 +204,6 @@ describe('7-module-4-task', () => {
     let thumb;
     let progress;
 
-    let pointerDownEvent;
-    let pointerMoveEvent;
-    let pointerUpEvent;
     let clickEvent;
 
     let pointerMoveClientX;
@@ -219,25 +216,28 @@ describe('7-module-4-task', () => {
       pointerMoveClientX = sliderRectLeft + 99;
 
       clickEvent = new MouseEvent('click', { clientX: pointerMoveClientX, bubbles: true });
-      pointerDownEvent = new PointerEvent('pointerdown', { bubbles: true });
-      pointerMoveEvent = new PointerEvent('pointermove', { clientX: pointerMoveClientX, bubbles: true });
-      pointerUpEvent = new PointerEvent('pointerup', { clientX: pointerMoveClientX, bubbles: true });
     })
 
     it('должен перемещать ползунок', () => {
-      thumb.dispatchEvent(pointerDownEvent);
-      thumb.dispatchEvent(pointerMoveEvent);
-      thumb.dispatchEvent(pointerUpEvent);
+      stepSlider.elem.dispatchEvent(clickEvent);
 
       expect(thumb.style.left).toBe('50%');
     });
 
-    it('должен задавать закрашиваемую область до ползунка', () => {
-      thumb.dispatchEvent(pointerDownEvent);
-      thumb.dispatchEvent(pointerMoveEvent);
-      thumb.dispatchEvent(pointerUpEvent);
+    it('должен задавать ширину закрашиваемой области до ползунка', () => {
+      stepSlider.elem.dispatchEvent(clickEvent);
 
       expect(progress.style.width).toBe('50%');
+    });
+
+    it('должен генерировать событие изменения значения', (done) => {
+      stepSlider.elem.addEventListener('slider-change', (event) => {
+        expect(event.detail).toBe(1);
+
+        done();
+      });
+
+      stepSlider.elem.dispatchEvent(clickEvent);
     });
 
   });
