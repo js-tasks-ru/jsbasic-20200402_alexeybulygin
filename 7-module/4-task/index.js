@@ -7,7 +7,7 @@ export default class StepSlider {
 
 
     this.elem.addEventListener('click', (event) => this.onClick(event));
-    this.elem.addEventListener('pointerdown', (event) => this.changeSpicy(event));
+    this.elem.querySelector('.slider__thumb').addEventListener('pointerdown', (event) => this.changeSpicy(event));
 
   }
 
