@@ -72,18 +72,17 @@ export default class StepSlider {
     // turn off browser drag
     sliderThumb.ondragstart = () => false;
 
-    let clickCoord = (event.clientX - sliderLeftPosition) / (this.elem.offsetWidth / spanWidth);
+    let clickCoord = ((event.clientX - sliderLeftPosition) / this.elem.offsetWidth) * spanWidth;
+
     this.value = Math.round(clickCoord);
-    if ( this.value <= 0 ) this.value = 0;
-    if ( this.value > steps.length - 1 ) this.value = steps.length - 1;
+    if ( clickCoord < 0 ) this.value = clickCoord = 0;
+    if ( clickCoord > steps.length - 1 ) this.value = clickCoord = steps.length - 1;
 
     // set active class for selected point
-    if ( clickCoord > 0 && clickCoord < steps.length - 1 ) {
-      if ( event.type === 'pointermove' ) {
-        this.setActivePoint(clickCoord);
-      } else {
-        this.setActivePoint(this.value);
-      }
+    if ( event.type === 'pointermove' ) {
+      this.setActivePoint(clickCoord);
+    } else {
+      this.setActivePoint(this.value);
     }
 
 
