@@ -1,10 +1,13 @@
 export default class StepSlider {
-  constructor({ steps, value = 1 }) {
+  constructor({ steps, value = 0 }) {
     this.render(steps, value);
 
+    this.value = value;
     this.defaultPosition(value);
 
+
     this.elem.addEventListener('pointerdown', (event) => this.changeSpicy(event));
+    this.elem.addEventListener('click', this.onPointerMove);
 
   }
 
@@ -26,18 +29,13 @@ export default class StepSlider {
 
     for (let i = 0; i < steps; i++) {
       let item = document.createElement('span');
-
-      if ( i === value ) {
-        item.classList.add('slider__step-active');
-      }
-
       this.elem.querySelector('.slider__steps').append(item);
     }
 
   }
 
   defaultPosition(value) {
-    this.onPointerMove(value);
+    this.setActivePoint(value);
 
     this.elem.dispatchEvent(
       new CustomEvent('slider-change', { // имя события должно быть именно 'slider-change'
@@ -55,68 +53,78 @@ export default class StepSlider {
     let sliderThumb = this.elem.querySelector('.slider__thumb');
     sliderThumb.ondragstart = () => false;
 
-    let pointermoveLink = (event) => this.onPointerMove(event);
-    document.addEventListener('pointermove', pointermoveLink);
-    document.addEventListener('pointerup', (event) => {
-      document.removeEventListener('pointermove', pointermoveLink);
-      this.elem.classList.remove('slider_dragging');
-      this.elem.dispatchEvent(
-        new CustomEvent('slider-change', { // имя события должно быть именно 'slider-change'
-          detail: this.value, // значение 0, 1, 2, 3, 4
-          bubbles: true // событие всплывает - это понадобится в дальнейшем
-        })
-      );
-
-    });
+    document.addEventListener('pointermove', this.onPointerMove);
+    document.addEventListener('pointerup', this.onPointerUp);
 
     // recalculate value if simple click, not drag
     this.onPointerMove(event);
 
   }
 
-  onPointerMove(event) {
+  onPointerMove = (event) => {
 
-    // add class while move event
     this.elem.classList.add('slider_dragging');
 
     let sliderThumb = this.elem.querySelector('.slider__thumb');
+    let sliderLeftPosition = this.elem.getBoundingClientRect().left;
+    let steps = this.elem.querySelectorAll('.slider__steps span');
+    let spanWidth = steps.length - 1;
+
+    // turn off browser drag
+    sliderThumb.ondragstart = () => false;
+
+    let clickCoord = (event.clientX - sliderLeftPosition) / (this.elem.offsetWidth / spanWidth);
+    this.value = Math.round(clickCoord);
+    if ( this.value <= 0 ) this.value = 0;
+    if ( this.value > steps.length - 1 ) this.value = steps.length - 1;
+
+    // set active class for selected point
+    if ( clickCoord > 0 && clickCoord < steps.length - 1 ) {
+      if ( event.type === 'pointermove' ) {
+        this.setActivePoint(clickCoord);
+      } else {
+        this.setActivePoint(this.value);
+      }
+    }
+
+  }
+
+  onPointerUp = (event) => {
+    this.removeEventListeners();
+
+    this.value = Math.round(this.value);
+
+    this.setActivePoint(this.value);
+
+    this.elem.classList.remove('slider_dragging');
+  }
+
+  setActivePoint(value) {
+    let sliderThumb = this.elem.querySelector('.slider__thumb');
     let sliderProgress = this.elem.querySelector('.slider__progress');
     let sliderValue = this.elem.querySelector('.slider__value');
+    let steps = this.elem.querySelectorAll('.slider__steps span');
 
-    let sliderPoints = this.elem.querySelectorAll('.slider__steps span');
-    let sliderLeftPosition = this.elem.getBoundingClientRect().left;
-    let steps = this.elem.querySelectorAll('.slider__steps span').length;
-    let spanWidth = this.elem.offsetWidth / (steps - 1);
-
-    // check if not defaultPosition
-    if ( isNaN(event) ) {
-
-      let clickCoord = event.clientX - sliderLeftPosition;
-      this.value = Math.round(clickCoord / spanWidth);
-      if ( this.value < 1 ) this.value = 0;
-      if ( this.value > sliderPoints.length - 1 ) this.value = sliderPoints.length - 1;
-
-      // set active class for selected point
-      for (let item of sliderPoints) {
-        item.classList.remove('slider__step-active');
-      }
-      this.elem.querySelectorAll('.slider__steps span')[this.value].classList.add('slider__step-active');
-
-    } else {
-      this.value = event;
+    for (let item of steps) {
+      item.classList.remove('slider__step-active');
     }
+    steps[Math.round(value)].classList.add('slider__step-active');
 
-    // select active point and colring drag
-    let leftPercents = 0;
-    if ( isNaN(event) ) {
-      leftPercents = this.value * (100 / (steps - 1));
-    } else {
-      leftPercents = event * (100 / (steps - 1));
-    }
+    let leftPercents = value * (100 / (steps.length - 1));
     sliderThumb.style.left = `${leftPercents}%`;
     sliderProgress.style.width = `${leftPercents}%`;
-    sliderValue.textContent = this.value;
+    sliderValue.textContent = Math.round(this.value);
 
+    this.elem.dispatchEvent(
+      new CustomEvent('slider-change', { // имя события должно быть именно 'slider-change'
+        detail: this.value, // значение 0, 1, 2, 3, 4
+        bubbles: true // событие всплывает - это понадобится в дальнейшем
+      })
+    );
+  }
+
+  removeEventListeners() {
+    document.removeEventListener('pointermove', this.onPointerMove);
   }
 
 }
