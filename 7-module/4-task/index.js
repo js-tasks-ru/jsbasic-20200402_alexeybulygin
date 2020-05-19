@@ -6,8 +6,8 @@ export default class StepSlider {
     this.defaultPosition(value);
 
 
+    this.elem.addEventListener('click', (event) => this.onClick(event));
     this.elem.addEventListener('pointerdown', (event) => this.changeSpicy(event));
-    this.elem.addEventListener('click', this.onPointerMove);
 
   }
 
@@ -16,7 +16,7 @@ export default class StepSlider {
     this.elem.classList.add('slider');
     this.elem.innerHTML = `
       <div class="slider__thumb">
-        <span class="slider__value">${value}</span>
+        <span class="slider__value"></span>
       </div>
 
       <!--Заполненная часть слайдера-->
@@ -56,12 +56,11 @@ export default class StepSlider {
     document.addEventListener('pointermove', this.onPointerMove);
     document.addEventListener('pointerup', this.onPointerUp);
 
-    // recalculate value if simple click, not drag
-    this.onPointerMove(event);
-
   }
 
   onPointerMove = (event) => {
+
+    event.preventDefault();
 
     this.elem.classList.add('slider_dragging');
 
@@ -87,6 +86,7 @@ export default class StepSlider {
       }
     }
 
+
   }
 
   onPointerUp = (event) => {
@@ -97,6 +97,24 @@ export default class StepSlider {
     this.setActivePoint(this.value);
 
     this.elem.classList.remove('slider_dragging');
+
+    this.elem.dispatchEvent(
+      new CustomEvent('slider-change', { // имя события должно быть именно 'slider-change'
+        detail: this.value, // значение 0, 1, 2, 3, 4
+        bubbles: true // событие всплывает - это понадобится в дальнейшем
+      })
+    );
+  }
+
+  onClick(event) {
+    this.onPointerMove(event);
+
+    this.elem.dispatchEvent(
+      new CustomEvent('slider-change', { // имя события должно быть именно 'slider-change'
+        detail: this.value, // значение 0, 1, 2, 3, 4
+        bubbles: true // событие всплывает - это понадобится в дальнейшем
+      })
+    );
   }
 
   setActivePoint(value) {
@@ -115,12 +133,6 @@ export default class StepSlider {
     sliderProgress.style.width = `${leftPercents}%`;
     sliderValue.textContent = Math.round(this.value);
 
-    this.elem.dispatchEvent(
-      new CustomEvent('slider-change', { // имя события должно быть именно 'slider-change'
-        detail: this.value, // значение 0, 1, 2, 3, 4
-        bubbles: true // событие всплывает - это понадобится в дальнейшем
-      })
-    );
   }
 
   removeEventListeners() {
