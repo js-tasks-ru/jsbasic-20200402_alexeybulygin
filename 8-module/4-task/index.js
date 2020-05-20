@@ -13,23 +13,63 @@ export default class Cart {
   }
 
   addProduct(product) {
-    // СКОПИРУЙТЕ СЮДЯ СВОЙ КОД
+    let productId = product.id;
+
+    if ( this.isEmpty() ) {
+      this.cartItems.push({"product": product, "count": 1});
+    } else {
+
+      let hasProduct = this.cartItems.find(item => item.product.id === productId);
+      if ( hasProduct ) {
+        hasProduct.count += 1;
+      } else {
+        this.cartItems.push({"product": product, "count": 1});
+      }
+
+    }
+
+    this.onProductUpdate(this.cartItems);
   }
 
   updateProductCount(productId, amount) {
-    // СКОПИРУЙТЕ СЮДЯ СВОЙ КОД
+    this.getTotalCount();
+    this.getTotalPrice();
+
+    for (let i = 0; i < this.cartItems.length; i++) {
+      let item = this.cartItems[i];
+      if ( item.product.id === productId ) {
+        item.count = item.count + amount;
+        if ( item.count < 1 ) {
+          this.cartItems.splice([i], 1);
+        }
+      }
+    }
+
+    this.onProductUpdate(productId);
   }
 
   isEmpty() {
-    // СКОПИРУЙТЕ СЮДЯ СВОЙ КОД
+    return ( this.cartItems.length > 0 ) ? false : true;
   }
 
   getTotalCount() {
-    // СКОПИРУЙТЕ СЮДЯ СВОЙ КОД
+    let totalCount = 0;
+
+    for (let item of this.cartItems) {
+      totalCount += item.count;
+    }
+
+    return totalCount;
   }
 
   getTotalPrice() {
-    // СКОПИРУЙТЕ СЮДЯ СВОЙ КОД
+    let totalPrice = 0;
+
+    for (let item of this.cartItems) {
+      totalPrice += item.product.price * item.count;
+    }
+
+    return totalPrice;
   }
 
   renderProduct(product, count) {
@@ -84,13 +124,47 @@ export default class Cart {
   }
 
   renderModal() {
-    // ...ваш код
+    let modal = new Modal();
+    let modalBody = document.createElement('div');
+
+    for (let i = 0; i < this.cartItems.length; i++) {
+      let item = this.cartItems[i];
+      modalBody.prepend(this.renderProduct(item.product, item.count));
+    }
+
+    modalBody.append(this.renderOrderForm());
+
+    modal.setTitle('Your order');
+    modal.setBody(modalBody);
+    modal.open();
+
+    document.addEventListener('click', (event) => {
+      if ( event.target.closest('.cart-counter__button_minus') ) {
+        let productId = event.target.closest('.cart-product').dataset.productId;
+        this.updateProductCount(productId, -1);
+      } else if ( event.target.closest('.cart-counter__button_plus') ) {
+        let productId = event.target.closest('.cart-product').dataset.productId;
+        this.updateProductCount(productId, +1);
+      }
+    });
   }
 
-  onProductUpdate() {
-    // ...ваш код
-
+  onProductUpdate(productId) {
     this.cartIcon.update(this);
+    if ( document.body.classList.contains('is-modal-open') ) {
+      let modalBody = document.querySelector('.modal');
+      let productCount = modalBody.querySelector(`[data-product-id="${productId}"] .cart-counter__count`);
+      let productPrice = modalBody.querySelector(`[data-product-id="${productId}"] .cart-product__price`);
+      let infoPrice = modalBody.querySelector(`.cart-buttons__info-price`);
+
+      let item = this.cartItems.find(item => item.product.id === productId);
+      if ( item ) {
+        productCount.innerHTML = item.count;
+      } else {
+        modalBody.querySelector(`[data-product-id="${productId}"]`).remove();
+      }
+      console.log(this.cartItems);
+    }
   }
 
   onSubmit(event) {
@@ -101,4 +175,3 @@ export default class Cart {
     this.cartIcon.elem.onclick = () => this.renderModal();
   }
 }
-
