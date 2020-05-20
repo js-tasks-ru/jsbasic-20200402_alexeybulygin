@@ -93,6 +93,7 @@ export default class StepSlider {
 
     this.value = Math.round(this.value);
 
+    // rebound to closest value
     this.setActivePoint(this.value);
 
     this.elem.classList.remove('slider_dragging');
