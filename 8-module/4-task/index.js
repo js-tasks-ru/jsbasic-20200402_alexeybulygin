@@ -143,15 +143,13 @@ export default class Cart {
     if ( document.body.classList.contains('is-modal-open') ) {
 
       let productRow = this.cartItems.find(item => item.product.id === productId);
+      let productCount = this.modalBody.querySelector(`[data-product-id="${productId}"] .cart-counter__count`);
+      let productPrice = this.modalBody.querySelector(`[data-product-id="${productId}"] .cart-product__price`);
+      let infoPrice = this.modalBody.querySelector(`.cart-buttons__info-price`);
 
       if ( !this.isEmpty() && productRow ) {
 
         document.querySelector(`[data-product-id=${productId}]`).innerHTML = this.renderProduct(productRow.product, productRow.count).innerHTML;
-
-        let productCount = this.modalBody.querySelector(`[data-product-id="${productId}"] .cart-counter__count`);
-        let productPrice = this.modalBody.querySelector(`[data-product-id="${productId}"] .cart-product__price`);
-        let infoPrice = this.modalBody.querySelector(`.cart-buttons__info-price`);
-
         productCount.innerHTML = productRow.count;
         productPrice.innerHTML = `€${(productRow.product.price * productRow.count).toFixed(2)}`;
         infoPrice.innerHTML = `€${this.getTotalPrice().toFixed(2)}`;
@@ -160,6 +158,7 @@ export default class Cart {
         this.modal.close();
       } else {
         this.modalBody.querySelector(`[data-product-id="${productId}"]`).remove();
+        infoPrice.innerHTML = `€${this.getTotalPrice().toFixed(2)}`;
       }
 
     }
