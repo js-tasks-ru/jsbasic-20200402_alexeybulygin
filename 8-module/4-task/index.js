@@ -123,17 +123,78 @@ export default class Cart {
   renderModal() {
     this.modal = new Modal();
 
-    let modalBody = document.createElement('div');
+    this.modalBody = document.createElement('div');
 
     this.cartItems.forEach(item => {
-      modalBody.prepend(this.renderProduct(item.product, item.count));
+      this.modalBody.prepend(this.renderProduct(item.product, item.count));
     });
 
-    modalBody.append(this.renderOrderForm());
+    this.modalBody.append(this.renderOrderForm());
 
     this.modal.setTitle('Your order');
-    this.modal.setBody(modalBody);
+    this.modal.setBody(this.modalBody);
     this.modal.open();
+
+  }
+
+  onProductUpdate(productId) {
+    this.cartIcon.update(this);
+
+    if ( document.body.classList.contains('is-modal-open') ) {
+
+      let productRow = this.cartItems.find(item => item.product.id === productId);
+
+      if ( !this.isEmpty() && productRow ) {
+
+        document.querySelector(`[data-product-id=${productId}]`).innerHTML = this.renderProduct(productRow.product, productRow.count).innerHTML;
+
+        let productCount = this.modalBody.querySelector(`[data-product-id="${productId}"] .cart-counter__count`);
+        let productPrice = this.modalBody.querySelector(`[data-product-id="${productId}"] .cart-product__price`);
+        let infoPrice = this.modalBody.querySelector(`.cart-buttons__info-price`);
+
+        productCount.innerHTML = productRow.count;
+        productPrice.innerHTML = `€${(productRow.product.price * productRow.count).toFixed(2)}`;
+        infoPrice.innerHTML = `€${this.getTotalPrice().toFixed(2)}`;
+
+      } else if ( this.isEmpty() ) {
+        this.modal.close();
+      } else {
+        this.modalBody.querySelector(`[data-product-id="${productId}"]`).remove();
+      }
+
+    }
+
+  }
+
+  onSubmit(event) {
+    event.preventDefault();
+
+    event.target.querySelector('[type="submit"]').classList.add('is-loading');
+
+    let response = fetch('https://httpbin.org/post', {
+        method: 'POST',
+        body: new FormData(event.target)
+    })
+    .then(response => {
+      if ( response.ok ) {
+        this.modal.setTitle('Success!');
+        this.cartItems = [];
+        this.cartIcon.update(this);
+        this.modalBody.innerHTML = `
+          <div class="modal__body-inner">
+          <p>
+          Order successful! Your order is being cooked :) <br>
+          We’ll notify you about delivery time shortly.<br>
+          <img src="/assets/images/delivery.gif">
+          </p>
+          </div>
+        `;
+      }
+    });
+
+  };
+
+  addEventListeners(event) {
 
     document.addEventListener('click', (event) => {
       if ( event.target.closest('.cart-counter__button_minus') ) {
@@ -145,41 +206,12 @@ export default class Cart {
       }
     });
 
-  }
-
-  onProductUpdate(productId) {
-    this.cartIcon.update(this);
-    if ( document.body.classList.contains('is-modal-open') ) {
-
-      let modalBody = document.querySelector('.modal');
-      let productRow = this.cartItems.find(item => item.product.id === productId);
-
-      if ( !this.isEmpty() && productRow ) {
-
-        document.querySelector(`[data-product-id=${productId}]`).innerHTML = this.renderProduct(productRow.product, productRow.count).innerHTML;
-
-        let productCount = modalBody.querySelector(`[data-product-id="${productId}"] .cart-counter__count`);
-        let productPrice = modalBody.querySelector(`[data-product-id="${productId}"] .cart-product__price`);
-        let infoPrice = modalBody.querySelector(`.cart-buttons__info-price`);
-
-        productCount.innerHTML = productRow.count;
-        productPrice.innerHTML = `€${(productRow.product.price * productRow.count).toFixed(2)}`;
-        infoPrice.innerHTML = `€${this.getTotalPrice().toFixed(2)}`;
-      } else if ( this.isEmpty() ) {
-        this.modal.close();
-      } else {
-        modalBody.querySelector(`[data-product-id="${productId}"]`).remove();
+    document.addEventListener('click', (event) => {
+      if ( event.target.closest('.cart-form') ) {
+        event.target.closest('.cart-form').onsubmit = (event) => this.onSubmit(event);
       }
+    });
 
-    }
-
-  }
-
-  onSubmit(event) {
-    // ...ваш код
-  };
-
-  addEventListeners(event) {
     this.cartIcon.elem.onclick = () => this.renderModal();
   }
 }
