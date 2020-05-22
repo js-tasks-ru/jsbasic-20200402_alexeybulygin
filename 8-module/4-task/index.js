@@ -135,7 +135,7 @@ export default class Cart {
     this.modal.setBody(this.modalBody);
     this.modal.open();
 
-    document.addEventListener('click', (event) => {
+    this.modal.elem.addEventListener('click', (event) => {
       if ( event.target.closest('.cart-counter__button_minus') ) {
         let productId = event.target.closest('.cart-product').dataset.productId;
         this.updateProductCount(productId, -1);
@@ -143,17 +143,15 @@ export default class Cart {
         let productId = event.target.closest('.cart-product').dataset.productId;
         this.updateProductCount(productId, 1);
       }
-      if ( event.target.closest('.cart-form') ) {
-        event.target.closest('.cart-form').onsubmit = (event) => this.onSubmit(event);
-      }
     });
+    document.querySelector('.cart-form').onsubmit = (event) => this.onSubmit(event);
 
   }
 
   onProductUpdate(productId) {
     this.cartIcon.update(this);
 
-    if ( document.body.classList.contains('is-modal-open') ) {
+    if ( document.body.classList.contains('is-modal-open') && this.modalBody ) {
 
       let productRow = this.cartItems.find(item => item.product.id === productId);
       let productCount = this.modalBody.querySelector(`[data-product-id="${productId}"] .cart-counter__count`);
