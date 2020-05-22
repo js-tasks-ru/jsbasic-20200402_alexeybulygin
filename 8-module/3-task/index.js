@@ -66,7 +66,6 @@ export default class Cart {
   }
 
   onProductUpdate() {
-    console.log(this.cartItems);
     // реализуем в следующей задаче
 
     this.cartIcon.update(this);
