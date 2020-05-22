@@ -30,8 +30,8 @@ export default class Cart {
   }
 
   updateProductCount(productId, amount) {
-    this.getTotalCount();
-    this.getTotalPrice();
+    // this.getTotalCount();
+    // this.getTotalPrice();
 
     this.cartItems.forEach((item, i) => {
       if ( item.product.id === productId ) {
