@@ -135,6 +135,19 @@ export default class Cart {
     this.modal.setBody(this.modalBody);
     this.modal.open();
 
+    document.addEventListener('click', (event) => {
+      if ( event.target.closest('.cart-counter__button_minus') ) {
+        let productId = event.target.closest('.cart-product').dataset.productId;
+        this.updateProductCount(productId, -1);
+      } else if ( event.target.closest('.cart-counter__button_plus') ) {
+        let productId = event.target.closest('.cart-product').dataset.productId;
+        this.updateProductCount(productId, 1);
+      }
+      if ( event.target.closest('.cart-form') ) {
+        event.target.closest('.cart-form').onsubmit = (event) => this.onSubmit(event);
+      }
+    });
+
   }
 
   onProductUpdate(productId) {
@@ -149,7 +162,6 @@ export default class Cart {
 
       if ( !this.isEmpty() && productRow ) {
 
-        document.querySelector(`[data-product-id=${productId}]`).innerHTML = this.renderProduct(productRow.product, productRow.count).innerHTML;
         productCount.innerHTML = productRow.count;
         productPrice.innerHTML = `€${(productRow.product.price * productRow.count).toFixed(2)}`;
         infoPrice.innerHTML = `€${this.getTotalPrice().toFixed(2)}`;
@@ -175,42 +187,23 @@ export default class Cart {
         body: new FormData(event.target)
     })
     .then(response => {
-      if ( response.ok ) {
-        this.modal.setTitle('Success!');
-        this.cartItems = [];
-        this.cartIcon.update(this);
-        this.modalBody.innerHTML = `
-          <div class="modal__body-inner">
-          <p>
-          Order successful! Your order is being cooked :) <br>
-          We’ll notify you about delivery time shortly.<br>
-          <img src="/assets/images/delivery.gif">
-          </p>
-          </div>
-        `;
-      }
+      this.modal.setTitle('Success!');
+      this.cartItems = [];
+      this.cartIcon.update(this);
+      this.modalBody.innerHTML = `
+        <div class="modal__body-inner">
+        <p>
+        Order successful! Your order is being cooked :) <br>
+        We’ll notify you about delivery time shortly.<br>
+        <img src="/assets/images/delivery.gif">
+        </p>
+        </div>
+      `;
     });
 
   };
 
   addEventListeners(event) {
-
-    document.addEventListener('click', (event) => {
-      if ( event.target.closest('.cart-counter__button_minus') ) {
-        let productId = event.target.closest('.cart-product').dataset.productId;
-        this.updateProductCount(productId, -1);
-      } else if ( event.target.closest('.cart-counter__button_plus') ) {
-        let productId = event.target.closest('.cart-product').dataset.productId;
-        this.updateProductCount(productId, 1);
-      }
-    });
-
-    document.addEventListener('click', (event) => {
-      if ( event.target.closest('.cart-form') ) {
-        event.target.closest('.cart-form').onsubmit = (event) => this.onSubmit(event);
-      }
-    });
-
     this.cartIcon.elem.onclick = () => this.renderModal();
   }
 }
