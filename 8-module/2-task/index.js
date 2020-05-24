@@ -24,7 +24,6 @@ export default class ProductGrid {
   }
 
   updateFilter(filters) {
-
     this.elem.querySelector('.products-grid__inner').innerHTML = '';
 
     for (let item of this.products) {
