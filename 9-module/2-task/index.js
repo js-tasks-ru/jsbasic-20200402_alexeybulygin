@@ -51,7 +51,7 @@ export default class Main {
         category: this.ribbonMenu.value
       });
 
-      await this.addEventListeners();
+      this.addEventListeners();
 
     });
 
@@ -71,7 +71,6 @@ export default class Main {
     });
 
     this.ribbonMenu.elem.addEventListener('ribbon-select', (event) => {
-      console.log(event);
       this.productsGrid.updateFilter({
         category: event.detail // категория из события 'ribbon-select'
       });
