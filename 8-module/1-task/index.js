@@ -3,20 +3,18 @@ import createElement from '../../assets/lib/create-element.js';
 export default class CartIcon {
   constructor() {
     this.render();
-
     this.addEventListeners();
-
   }
 
   render() {
     this.elem = createElement('<button class="cart-icon"></button>');
+    this.elem.topCoord = this.elem.getBoundingClientRect().top + window.pageYOffset;
   }
 
   update(cart) {
     if (!cart.isEmpty()) {
       this.elem.classList.add('cart-icon_visible');
 
-      this.elem.topCoord = this.elem.getBoundingClientRect().top + window.pageYOffset;
 
       this.elem.innerHTML = `
         <div class="cart-icon__inner">
@@ -43,7 +41,7 @@ export default class CartIcon {
 
   updatePosition() {
 
-    if (!this.elem.offsetHeight) {return;} // not visible, for mocha test
+    // if (!this.elem.offsetHeight) {return;} // not visible, for mocha test
 
     if ( window.pageYOffset > this.elem.topCoord && document.documentElement.clientWidth >= 767 ) {
 
