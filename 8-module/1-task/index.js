@@ -41,7 +41,7 @@ export default class CartIcon {
 
   updatePosition() {
 
-    // if (!this.elem.offsetHeight) {return;} // not visible, for mocha test
+    if (!this.elem.offsetHeight) {return;} // not visible, for mocha test
 
     if ( window.pageYOffset > this.elem.topCoord && document.documentElement.clientWidth >= 767 ) {
 
