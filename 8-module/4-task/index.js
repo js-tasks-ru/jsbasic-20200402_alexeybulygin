@@ -201,5 +201,10 @@ export default class Cart {
 
   addEventListeners(event) {
     this.cartIcon.elem.onclick = () => this.renderModal();
+    document.addEventListener('click', (event) => {
+      if ( event.target.closest('.modal__overlay') ) {
+  			this.modal.close();
+  		}
+    })
   }
 }
