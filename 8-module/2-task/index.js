@@ -24,33 +24,17 @@ export default class ProductGrid {
   }
 
   updateFilter(filters) {
+
     this.elem.querySelector('.products-grid__inner').innerHTML = '';
 
     for (let item of this.products) {
 
-      if ( filters.noNuts === true && !("nuts" in item) ) {
-        this.itemConstruct(item);
-      } else if ( filters.noNuts === false ) {
-        this.itemConstruct(item);
-      }
+      if ( filters.noNuts && item.nuts ) continue;
+      if ( filters.vegeterianOnly && !item.vegeterian ) continue;
+      if ( void 0 !== filters.maxSpiciness && item.spiciness > filters.maxSpiciness ) continue;
+      if ( filters.category && item.category != filters.category ) continue;
 
-      if ( filters.vegeterianOnly && filters.vegeterianOnly === true ) {
-        if ( "vegeterian" in item && item.vegeterian === true ) {
-          this.itemConstruct(item);
-        }
-      } else if ( filters.vegeterianOnly && filters.vegeterianOnly === false ) {
-        if ( "vegeterian" in item && item.vegeterian === false ) {
-          this.itemConstruct(item);
-        }
-      }
-
-      if ( filters.maxSpiciness && item.spiciness <= filters.maxSpiciness ) {
-        this.itemConstruct(item);
-      }
-
-      if ( filters.category && item.category === filters.category ) {
-        this.itemConstruct(item);
-      }
+      this.itemConstruct(item);
 
     }
 
