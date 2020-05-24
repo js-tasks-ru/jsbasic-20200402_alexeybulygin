@@ -59,7 +59,7 @@ export default class Main {
 
   addEventListeners() {
 
-    this.productsGrid.elem.addEventListener('product-add', (event) => {
+    document.addEventListener('product-add', (event) => {
       let product = this.products.find(item => item.id === event.detail);
       this.cart.addProduct(product);
     });
