@@ -10,6 +10,7 @@ export default class CartIcon {
   render() {
     this.elem = createElement('<button class="cart-icon"></button>');
 
+    this.topCoord = this.elem.getBoundingClientRect().top + window.pageYOffset;
   }
 
   update(cart) {
@@ -23,13 +24,13 @@ export default class CartIcon {
           <span class="cart-icon__price">€${cart.getTotalPrice().toFixed(2)}</span>
         </div>`;
 
-      this.topCoord = this.elem.getBoundingClientRect().top + window.pageYOffset;
-      this.updatePosition();
 
       this.elem.classList.add('shake');
       this.elem.addEventListener('transitionend', () => {
         this.elem.classList.remove('shake');
       }, {once: true});
+
+      this.updatePosition();
 
     } else {
       this.elem.classList.remove('cart-icon_visible');
@@ -55,13 +56,15 @@ export default class CartIcon {
       // calculate right position
       let container = document.querySelector('.container');
       let rightSpace = document.documentElement.offsetWidth - container.getBoundingClientRect().left - container.offsetWidth;
-      if ( window.pageYOffset > this.topCoord && rightSpace >= this.elem.offsetWidth + 20 ) {
+      if ( rightSpace >= this.elem.offsetWidth + 20 && window.pageYOffset > this.topCoord ) {
         this.elem.style.left = container.getBoundingClientRect().left + container.offsetWidth + 20 + 'px';
-      } else if ( window.pageYOffset < this.topCoord && rightSpace >= this.elem.offsetWidth + 20 ) {
-        this.elem.style.position = '';
-        this.elem.style.left = '';
-      } else {
+      } else if ( rightSpace < this.elem.offsetWidth + 20 ) {
         this.elem.style.left = document.documentElement.offsetWidth - this.elem.offsetWidth - 10 + 'px';
+      } else {
+        this.elem.style.position = '';
+        this.elem.style.top = '';
+        this.elem.style.left = '';
+        this.elem.style.zIndex = '';
       }
 
     } else {
